@@ -1,0 +1,1 @@
+** Simple  node-express-sequelize-starter boilerplate **
