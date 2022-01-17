@@ -1,5 +1,4 @@
-/api/node_modules
-/api/package-lock.json
-/api/.env
-.idea/
-/api/.vscode
+node_modules
+package-lock.json
+.env
+
