@@ -1,5 +1,4 @@
 const Product = require('../model/product.model');
-
     
 exports.getProducts = async (req, res) => {
         try {
@@ -7,7 +6,7 @@ exports.getProducts = async (req, res) => {
                 order: [['id', 'ASC']],
                 attributes: [
                     'id', 'product_name', 'product_quantity', 'product_list',
-                    'product_description'
+                    'product_description', 'product_image'
                 ]
             })                    
             return res.status(200).send({ product });
@@ -18,6 +17,7 @@ exports.getProducts = async (req, res) => {
     },
 
     exports.addProducts = async (req, res) => {
+        console.log(req.file);
         try {
             const saveObj = {
                 ...req.body,
@@ -80,22 +80,4 @@ exports.getProducts = async (req, res) => {
             console.log(e);
             res.status(404).send(e);
         }
-
-    // async searchProducts(req, res) {
-    //     try {
-    //         const searchRecord = await Product.findAll({
-    //             where: {
-    //                 product_name: {
-    //                   [Op.like]: '%' +  req.query.product_name +  '%'
-    //                 }
-    //               }
-    //         })
-    //         return res.status(200).send({ searchRecord })    
-    //     } catch (error) {
-    //         return res.status(500).send(error)  
-             
-    //     }
-    // }
-
-
 }
