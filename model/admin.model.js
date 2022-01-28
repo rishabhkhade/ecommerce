@@ -28,6 +28,10 @@ const AdminModel = sequelize.define('admin', {
     password: {
         type: Sequelize.STRING
     },
+	role:{
+        type: Sequelize.ENUM,
+        values: [ 'admin' ],
+    },
     createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -40,7 +44,7 @@ AdminModel.getUser = async (reqData) => {
 	try {
 		return await AdminModel.findOne({
 			where: {
-				mobile_no: reqData.mobile_no
+				mobile_no : reqData.mobile_no
 			},
 			attributes: [ 'id', 'name', 'email', 'mobile_no', 'password', ]
 		});

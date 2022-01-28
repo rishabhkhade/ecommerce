@@ -14,7 +14,7 @@ const {sign} = require('jsonwebtoken')
             return res.status(200).send({ admin });
         } catch (e) {
             console.log(e);
-            return res.status(500).send(e);
+            return res.status(404).send(e);
         }
     },
     
@@ -25,7 +25,7 @@ const {sign} = require('jsonwebtoken')
             res.status(200).send(admin);               
             } catch (e) {
             console.log(e);
-            return res.status(500).send(e);
+            return res.status(404).send(e);
         }
     },
 
