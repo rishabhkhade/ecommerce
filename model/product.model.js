@@ -25,10 +25,10 @@ const sequelize = require('../config/database');
                 type: Sequelize.STRING(191),
                 allowNull: false,
         },
-        product_image: {
-                type: Sequelize.STRING(191),
-                allowNull: false
-        },
+        // product_image: {
+        //         type: Sequelize.STRING(191),
+        //         allowNull: false
+        // },
         createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

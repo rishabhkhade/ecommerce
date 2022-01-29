@@ -6,7 +6,7 @@ exports.getProducts = async (req, res) => {
                 order: [['id', 'ASC']],
                 attributes: [
                     'id', 'product_name', 'product_quantity', 'product_list',
-                    'product_description', 'product_image'
+                    'product_description', //'product_image'
                 ]
             })                    
             return res.status(200).send({ product });

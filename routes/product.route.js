@@ -2,8 +2,7 @@ const router = require('express').Router();
 const product = require("../controller/product.controller")
 const multer = require('multer');
 const path = require('path');
-const { functions } = require('lodash');
-
+const { checkToken } = require('../middleware/adminMiddleware');
 
 const storage = multer.diskStorage({
     destination: './upload/images',
@@ -12,13 +11,11 @@ const storage = multer.diskStorage({
     }
 })
 
-
 const upload = multer({
     storage : storage,
 })
 
-
-router.get("/all-products", product.getProducts)
+router.get("/all-products",checkToken, product.getProducts)
 router.get("/:id", product.getProductsById)
 router.post("/add-product",upload.single('product_image'), product.addProducts)
 router.put("/:id", product.updateProducts)

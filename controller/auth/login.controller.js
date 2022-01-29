@@ -9,7 +9,7 @@ exports.getLogin = async(req, res) => {
             // const admin = await adminModel.getUser(req.body);
             const admin = await req.body;
             const token = jwt.sign(admin, process.env.JWT_SECRET,{ expiresIn: '1h' });
-            Object.assign(token);
+            // Object.assign(token);
             res.status(200).send({ token, admin });
 
         } catch (e) {
