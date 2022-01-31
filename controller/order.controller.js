@@ -1,24 +1,22 @@
-const Product = require('../model/product.model');
 const Order = require('../model/order.model');
-
-exports.getProducts = async (req, res) => {
+    
+exports.getOrders = async (req, res) => {
         try {
-            const product = await Product.findAndCountAll({
+            const order = await Order.findAndCountAll({
                 order: [['id', 'ASC']],
                 attributes: [
-                    'id', 'product_name', 'product_quantity', 'product_list',
-                    'product_description', //'product_image'
+                    'id', 'order_name', 'order_quantity', 'order_list',
+                    'order_price','purchase_date','delivered_date'
                 ]
             })                    
-            return res.status(200).send({ product });
+            return res.status(200).send({ order });
         } catch (e) {
             console.log(e);
             return res.status(404).send(e);
         }
     },
 
-    exports.addProducts = async (req, res) => {
-        // const { Order } = sequelize.models;
+    exports.addOrders = async (req, res) => {
         console.log(req.file);
         try {
             const saveObj = {
@@ -26,32 +24,25 @@ exports.getProducts = async (req, res) => {
                 createdAt: new Date(),
                 updatedAt: new Date()
             };
-            return await Product.create(saveObj, {
-                include: [
-                    { model: Order, as: 'orders' }
-                ],
-               
-            });
-            
 
-            // const product = await Product.create(saveObj);
+            const order = await Order.create(saveObj);
 
-            // return res.status(200).send({ product });
+            return res.status(200).send({ order });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);
         }
     },
     
-    exports.getProductsById = async (req, res) => {
+    exports.getOrdersById = async (req, res) => {
         try {
-            const saveObj = await Product.findAll({
+            const saveObj = await Order.findAll({
 				where: {
 					id: req.params.id
 				},
                 attributes: [
-					'id', 'product_name', 'product_quantity', 'product_list',
-					'product_description'
+					'id', 'order_name', 'order_quantity', 'order_list',
+                    'order_price','purchase_date','delivered_date'
 				]
 			});
             
@@ -63,24 +54,24 @@ exports.getProducts = async (req, res) => {
         }
     },
 
-    exports.updateProducts = async (req, res) => {
+    exports.updateOrders = async (req, res) => {
         try {
             const saveObj = {
                 ...req.body,
                 updatedAt: new Date()
             };
-            const product = await Product.create(saveObj);
-            return res.status(200).send({ product });
+            const order = await Order.create(saveObj);
+            return res.status(200).send({ order });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);
         }
     },
 
-    exports.deleteUser = async (req, res) => {
+    exports.deleteOrders = async (req, res) => {
         
         try {
-            await Product.destroy({
+            await Order.destroy({
                 where:{
                     id : req.params.id
                 },  

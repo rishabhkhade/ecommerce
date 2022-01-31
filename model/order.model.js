@@ -2,33 +2,41 @@ const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
 
 
-  const Product = sequelize.define('product', {
+  const Order = sequelize.define('order', {
         id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
         },
-        product_name: {
+        product_id: {
+                allowNull: false,
+                type: Sequelize.INTEGER
+        },
+        order_name: {
                 type: Sequelize.STRING(191),
                 allowNull: false,
         },
-        product_quantity: {
+        order_quantity: {
                 type: Sequelize.STRING(191),
                 allowNull: false,
         },
-        product_list: {
+        order_list: {
                 type: Sequelize.STRING(191),
                 allowNull: false,
         },
-        product_description: {
+        order_price: {
                 type: Sequelize.STRING(191),
                 allowNull: false,
         },
-        // product_image: {
-        //         type: Sequelize.STRING(191),
-        //         allowNull: false
-        // },
+        purchase_date: {
+                type: Sequelize.STRING(191),
+                allowNull: false,
+        },
+        delivered_date: {
+                type: Sequelize.STRING(191),
+                allowNull: false,
+        },
         createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
@@ -38,14 +46,13 @@ const sequelize = require('../config/database');
                 type: Sequelize.DATE
         }
         }, {
-                tableName: 'products',
+                tableName: 'orders',
         });
 
-        Product.associate = function (models) {
-                Product.hasMany(models.Order, {
-                        foreignKey: "product_id",
-                        as: "orders",
-                }) 
-        }
+    Order.associate = function (models) {
+        // associations can be defined here
+        
+    };
 
-module.exports = Product ;
+
+module.exports = Order ;
