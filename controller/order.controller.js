@@ -5,7 +5,7 @@ exports.getOrders = async (req, res) => {
             const order = await Order.findAndCountAll({
                 order: [['id', 'ASC']],
                 attributes: [
-                    'id', 'order_name', 'order_quantity', 'order_list',
+                    'id', 'product_id','order_name', 'order_quantity', 'order_list',
                     'order_price','purchase_date','delivered_date'
                 ]
             })                    
@@ -36,32 +36,22 @@ exports.getOrders = async (req, res) => {
     
     exports.getOrdersById = async (req, res) => {
         try {
-            const saveObj = await Order.findAll({
-				where: {
-					id: req.params.id
-				},
-                attributes: [
-					'id', 'order_name', 'order_quantity', 'order_list',
-                    'order_price','purchase_date','delivered_date'
-				]
-			});
-            
-            return res.status(200).send({ saveObj });
-
+            const decId = req.params.id;
+            let saveObj = await Order.findByPk(decId);
+            if (!saveObj) return res.status(404).send({ message: 'Id not found' });
+            res.status(200).send({ order: saveObj });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);
         }
     },
-
+    
     exports.updateOrders = async (req, res) => {
         try {
-            const saveObj = {
-                ...req.body,
-                updatedAt: new Date()
-            };
-            const order = await Order.create(saveObj);
-            return res.status(200).send({ order });
+            const decId = req.params.id;
+            let saveObj = await Order.findByPk(decId);
+            if (!saveObj) return res.status(404).send({ message: 'Id not found' });
+            res.status(200).send({ order: saveObj });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);
@@ -71,11 +61,11 @@ exports.getOrders = async (req, res) => {
     exports.deleteOrders = async (req, res) => {
         
         try {
-            await Order.destroy({
-                where:{
-                    id : req.params.id
-                },  
-            })
+            const decId = req.params.id;
+            let saveObj = await Order.findByPk(decId);
+            if (!saveObj) return res.status(404).send({ message: 'Id not found' });
+            saveObj.destroy();
+            res.status(200).send({ message : "Order Successfully Deleted" });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);

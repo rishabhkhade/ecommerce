@@ -30,12 +30,12 @@ const sequelize = require('../config/database');
                 allowNull: false,
         },
         purchase_date: {
-                type: Sequelize.STRING(191),
                 allowNull: false,
+                type: Sequelize.DATE,
         },
         delivered_date: {
-                type: Sequelize.STRING(191),
                 allowNull: false,
+                type: Sequelize.DATE,
         },
         createdAt: {
                 allowNull: false,

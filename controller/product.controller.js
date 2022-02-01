@@ -45,18 +45,10 @@ exports.getProducts = async (req, res) => {
     
     exports.getProductsById = async (req, res) => {
         try {
-            const saveObj = await Product.findAll({
-				where: {
-					id: req.params.id
-				},
-                attributes: [
-					'id', 'product_name', 'product_quantity', 'product_list',
-					'product_description'
-				]
-			});
-            
-            return res.status(200).send({ saveObj });
-
+            const decId = req.params.id;
+            let saveObj = await Product.findByPk(decId);
+            if (!saveObj) return res.status(404).send({ message: 'Id not found' });
+            res.status(200).send({ product: saveObj });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);
@@ -65,12 +57,10 @@ exports.getProducts = async (req, res) => {
 
     exports.updateProducts = async (req, res) => {
         try {
-            const saveObj = {
-                ...req.body,
-                updatedAt: new Date()
-            };
-            const product = await Product.create(saveObj);
-            return res.status(200).send({ product });
+            const decId = req.params.id;
+            let saveObj = await Product.findByPk(decId);
+            if (!saveObj) return res.status(404).send({ message: 'Id not found' });
+            res.status(200).send({ product: saveObj });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);
@@ -80,11 +70,11 @@ exports.getProducts = async (req, res) => {
     exports.deleteUser = async (req, res) => {
         
         try {
-            await Product.destroy({
-                where:{
-                    id : req.params.id
-                },  
-            })
+            const decId = req.params.id;
+            let saveObj = await Product.findByPk(decId);
+            if (!saveObj) return res.status(404).send({ message: 'Id not found' });
+            saveObj.destroy();
+            res.status(200).send({ message : "Product Successfully Deleted" });
         } catch (e) {
             console.log(e);
             res.status(404).send(e);

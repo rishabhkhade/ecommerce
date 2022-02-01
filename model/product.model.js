@@ -42,7 +42,7 @@ const sequelize = require('../config/database');
         });
 
         Product.associate = function (models) {
-                Product.hasMany(models.Order, {
+                Order.hasMany(models.Product, {
                         foreignKey: "product_id",
                         as: "orders",
                 }) 
