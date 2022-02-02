@@ -1,3 +1,6 @@
+const httpStatus = require('http-status');
+const APIError = require('../helpers/APIError');
+const resPattern = require('../helpers/resPattern');
 const Product = require('../model/product.model');
 const Order = require('../model/order.model');
 
@@ -9,37 +12,31 @@ exports.getProducts = async (req, res) => {
                     'id', 'product_name', 'product_quantity', 'product_list',
                     'product_description', //'product_image'
                 ]
-            })                    
-            return res.status(200).send({ product });
+            })     
+                let obj = resPattern.successPattern(httpStatus.OK, product, 'success');
+                return res.status(obj.code).json(obj);               
         } catch (e) {
-            console.log(e);
-            return res.status(404).send(e);
+                return next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
         }
     },
 
-    exports.addProducts = async (req, res) => {
-        // const { Order } = sequelize.models;
-        console.log(req.file);
+    exports.addProducts = async (req, res, next) => {
         try {
             const saveObj = {
                 ...req.body,
                 createdAt: new Date(),
                 updatedAt: new Date()
             };
-            return await Product.create(saveObj, {
-                include: [
-                    { model: Order, as: 'orders' }
-                ],
-               
-            });
-            
-
-            // const product = await Product.create(saveObj);
-
-            // return res.status(200).send({ product });
+            // return await Product.create(saveObj, {
+            //         include: [
+            //             { model: Order, as: 'orders' }
+            //         ],
+                   
+            //     });
+                let obj = resPattern.successPattern(httpStatus.OK, saveObj, 'success');
+                return res.status(obj.code).json(obj); 
         } catch (e) {
-            console.log(e);
-            res.status(404).send(e);
+            return next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
         }
     },
     
@@ -48,10 +45,10 @@ exports.getProducts = async (req, res) => {
             const decId = req.params.id;
             let saveObj = await Product.findByPk(decId);
             if (!saveObj) return res.status(404).send({ message: 'Id not found' });
-            res.status(200).send({ product: saveObj });
+            let obj = resPattern.successPattern(httpStatus.OK, saveObj, 'success');
+            return res.status(obj.code).json(obj);
         } catch (e) {
-            console.log(e);
-            res.status(404).send(e);
+            return next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
         }
     },
 
@@ -60,10 +57,10 @@ exports.getProducts = async (req, res) => {
             const decId = req.params.id;
             let saveObj = await Product.findByPk(decId);
             if (!saveObj) return res.status(404).send({ message: 'Id not found' });
-            res.status(200).send({ product: saveObj });
+            let obj = resPattern.successPattern(httpStatus.OK, saveObj, 'success');
+            return res.status(obj.code).json(obj);
         } catch (e) {
-            console.log(e);
-            res.status(404).send(e);
+            return next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
         }
     },
 
@@ -74,9 +71,9 @@ exports.getProducts = async (req, res) => {
             let saveObj = await Product.findByPk(decId);
             if (!saveObj) return res.status(404).send({ message: 'Id not found' });
             saveObj.destroy();
-            res.status(200).send({ message : "Product Successfully Deleted" });
+            let obj = resPattern.successPattern(httpStatus.OK, saveObj, 'success');
+            return res.status(obj.code).json(obj);
         } catch (e) {
-            console.log(e);
-            res.status(404).send(e);
+            return next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
         }
 }
