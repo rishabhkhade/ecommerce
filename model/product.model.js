@@ -9,26 +9,30 @@ const sequelize = require('../config/database');
                 primaryKey: true,
                 type: Sequelize.INTEGER
         },
+        // order_id: {
+        //         type: Sequelize.INTEGER(11),
+        //         allowNull: false,
+        // },
         product_name: {
                 type: Sequelize.STRING(191),
-                allowNull: false,
+                allowNull: true,
         },
         product_quantity: {
                 type: Sequelize.STRING(191),
-                allowNull: false,
+                allowNull: true,
         },
         product_list: {
                 type: Sequelize.STRING(191),
-                allowNull: false,
+                allowNull: true,
         },
         product_description: {
                 type: Sequelize.STRING(191),
-                allowNull: false,
+                allowNull: true,
         },
-        // product_image: {
-        //         type: Sequelize.STRING(191),
-        //         allowNull: false
-        // },
+        product_image: {
+                type: Sequelize.STRING(191),
+                allowNull: true
+        },
         createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
@@ -45,7 +49,8 @@ const sequelize = require('../config/database');
                 Order.hasMany(models.Product, {
                         foreignKey: "product_id",
                         as: "orders",
-                }) 
+                }) ;
+                // Order.belongsTo(Product);
         }
 
 module.exports = Product ;

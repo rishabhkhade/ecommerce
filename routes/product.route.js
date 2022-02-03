@@ -4,16 +4,20 @@ const multer = require('multer');
 const path = require('path');
 const { checkToken } = require('../middleware/adminMiddleware');
 
-const storage = multer.diskStorage({
-    destination: './upload/images',
-    filename: (req, file, cb) => {
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
 
-const upload = multer({
-    storage : storage,
-})
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        log.console(req.file,">>>>>>>>>>")
+        cb(null, '../upload/images');
+    },
+    filename: (req, file, cb) => {
+        return cb(null,new Date().toISOString() + file.originalname);
+    }
+});
+
+const upload = multer({ storage : storage, limits:{
+    fileSize: 1024 * 1024 * 5
+}});
 
 router.get("/all-products",checkToken, product.getProducts)
 router.get("/:id",checkToken, product.getProductsById)

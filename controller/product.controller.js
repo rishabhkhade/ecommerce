@@ -23,17 +23,12 @@ exports.getProducts = async (req, res) => {
     exports.addProducts = async (req, res, next) => {
         try {
             const saveObj = {
-                ...req.body,
-                createdAt: new Date(),
-                updatedAt: new Date()
+                ...req.body
             };
-            // return await Product.create(saveObj, {
-            //         include: [
-            //             { model: Order, as: 'orders' }
-            //         ],
-                   
-            //     });
-                let obj = resPattern.successPattern(httpStatus.OK, saveObj, 'success');
+            console.log(saveObj,">>>>.");
+            console.log(req.body,">>>>.");
+            const proDuct = await Product.create(saveObj);
+                let obj = resPattern.successPattern(httpStatus.OK, proDuct, 'success');
                 return res.status(obj.code).json(obj); 
         } catch (e) {
             return next(new APIError(e.message, httpStatus.BAD_REQUEST, true));

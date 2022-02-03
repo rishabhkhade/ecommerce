@@ -6,6 +6,7 @@ module.exports = {
       let token = req.get("authorization");
       if (token) {
         token = token.slice(7);
+        console.log(token,">>>>>>>>>");
         jwt.verify(token,process.env.JWT_SECRET, (err, decoded) => {
             req.admin = decoded
           if (err) {
