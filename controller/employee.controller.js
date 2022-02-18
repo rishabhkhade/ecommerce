@@ -1,53 +1,33 @@
-const Admin = require('../model/admin.model');
+const Employee = require('../model/employee.model');
 const bcrypt = require('bcrypt');
-const { hashSync, genSaltSync, compareSync } = require('bcrypt')
 
 
-    exports.getAllUsers = async (req, res, next) =>  {
+    exports.getAllEmployee = async (req, res, next) =>  {
         try {
-            const admin = await Admin.findAll({
+            const employee = await Employee.findAll({
                 attributes: [
 					'id', 'name', 'email', 'mobile_no'
 				]
             });
-            return res.status(200).send({ admin });
+            return res.status(200).send({ employee });
         } catch (e) {
             console.log(e);
             return res.status(404).send(e);
         }
     },
     
-    exports.getOneUser = async (req, res, next) => {
+    exports.getOneEmployee = async (req, res, next) => {
         try {
             const { id } = req.params;
-            const admin = await Admin.findByPk(id);
-            res.status(200).send(admin);               
+            const employee = await Employee.findByPk(id);
+            res.status(200).send(employee);               
             } catch (e) {
             console.log(e);
             return res.status(404).send(e);
         }
     },
 
-    exports.addUser = async (req, res, next) => {
-        try {
-            const hashPassword = hashSync(req.body.password, genSaltSync(10), null);
-            const saveObj = {
-                ...req.body,
-                password: hashPassword,
-                createdAt: new Date(),
-                updatedAt: new Date()
-            };
-
-            const admin = await Admin.create(saveObj);
-
-            return res.status(200).send({ admin });
-        } catch (e) {
-            console.log(e);
-            res.status(server_error).send(e);
-        }
-    },
-
-    exports.updateUser = async (req, res, next) => {
+    exports.addEmployee = async (req, res, next) => {
         try {
             const saveObj = {
                 ...req.body,
@@ -55,19 +35,36 @@ const { hashSync, genSaltSync, compareSync } = require('bcrypt')
                 updatedAt: new Date()
             };
 
-            const admin = await Admin.create(saveObj);
+            const employee = await Employee.create(saveObj);
 
-            return res.status(200).send({ admin });
-
+            return res.status(200).send({ employee });
         } catch (e) {
             console.log(e);
-            res.status(server_error).send(e);
+            res.status(404).send(e);
         }
     },
 
-    exports.deleteUser = async (req, res, next) => {
+    exports.updateEmployee = async (req, res, next) => {
         try {
-            await Admin.destroy({
+            const saveObj = {
+                ...req.body,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+
+            const employee = await Employee.create(saveObj);
+
+            return res.status(200).send({ employee });
+
+        } catch (e) {
+            console.log(e);
+            res.status(404).send(e);
+        }
+    },
+
+    exports.deleteEmployee = async (req, res, next) => {
+        try {
+            await Employee.destroy({
                 where:{
 
                     id : req.params.id

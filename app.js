@@ -31,7 +31,10 @@ app.use(cors());
 
 app.use(helmet());
 
-app.use(express.static(__dirname + '/upload'));
+// app.use(express.static('upload'));
+app.use('/upload', express.static('./upload'));
+
+// console.log(__dirname,">>>>>>>>>");
 
 app.use('/api', routes);
 
