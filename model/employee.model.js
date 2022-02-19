@@ -28,17 +28,17 @@ const EmployeeModel = sequelize.define('employee', {
 });
 
 
-EmployeeModel.getEmployee = async (reqData) => {
-	try {
-		return await EmployeeModel.findOne({
-			where: {
-				mobile_no : reqData.mobile_no
-			},
-			attributes: [ 'id', 'name', 'email', 'mobile_no' ]
-		});
-	} catch (e) {
-		return false;
-	}
-};
+// EmployeeModel.getEmployee = async (reqData) => {
+// 	try {
+// 		return await EmployeeModel.findOne({
+// 			where: {
+// 				mobile_no : reqData.mobile_no
+// 			},
+// 			attributes: [ 'id', 'name', 'email', 'mobile_no' ]
+// 		});
+// 	} catch (e) {
+// 		return false;
+// 	}
+// };
 
 module.exports = EmployeeModel;

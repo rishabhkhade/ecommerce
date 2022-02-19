@@ -1,15 +1,31 @@
 const Employee = require('../model/employee.model');
+const resPattern = require('../helpers/resPattern');
+const httpStatus = require('http-status');
+const APIError = require('../helpers/APIError');
 const bcrypt = require('bcrypt');
-
 
     exports.getAllEmployee = async (req, res, next) =>  {
         try {
-            const employee = await Employee.findAll({
+            const { pageNo } = req.query;
+            const page = (pageNo != null  && pageNo != undefined) ? pageNo : 1;
+            const pageSize = 5;
+            const employeeRes = await Employee.findAndCountAll({
+                offset: (page-1)*pageSize,
+				limit: pageSize,
+
                 attributes: [
-					'id', 'name', 'email', 'mobile_no'
+                    'id', 'name', 'email', 'mobile_no'
 				]
             });
-            return res.status(200).send({ employee });
+            const pages = Math.ceil(employeeRes.count / pageSize);
+            const pageData = {
+                total_record : employeeRes.count,
+                per_page     : pageSize,
+                current_page : page,
+                total_pages  : pages
+            }
+            const employee = employeeRes.rows;
+            return res.status(200).send({ employee, pageData });
         } catch (e) {
             console.log(e);
             return res.status(404).send(e);
@@ -64,15 +80,13 @@ const bcrypt = require('bcrypt');
 
     exports.deleteEmployee = async (req, res, next) => {
         try {
-            await Employee.destroy({
-                where:{
-
-                    id : req.params.id
-                },
-                
-            })
+            const decId = req.params.id;
+            let saveObj = await Employee.findByPk(decId);
+            if (!saveObj) return res.status(404).send({ message: 'Id not found' });
+            saveObj.destroy();
+            let obj = resPattern.successPattern(httpStatus.OK, saveObj, 'success');
+            return res.status(obj.code).json(obj);
         } catch (e) {
-            console.log(e);
-            res.status(server_error).send(e);
+            return next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
         }
     }
